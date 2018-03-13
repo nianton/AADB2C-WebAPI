@@ -1,0 +1,8 @@
+﻿@model System.String
+@{
+    Layout = "~/Views/Shared/_AdB2CLayout.cshtml";
+    var campaign = Model;
+}
+
+<h3 class="text-center">Sign up now - create your account @(string.IsNullOrWhiteSpace(campaign) ? string.Empty : string.Format("(campaign: {0})", campaign))</h3>
+<div id="api" data-name="Unified"></div>

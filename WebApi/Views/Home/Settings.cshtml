@@ -1,0 +1,17 @@
+﻿@{ 
+    var settings = System.Configuration.ConfigurationManager.AppSettings;
+}
+<h2>App Settings</h2>
+<table>
+    <tr>
+        <td>Setting key</td>
+        <td>Setting value</td>
+    </tr>
+    @foreach (var key in settings.AllKeys)
+    {
+        <tr>
+            <td>@key</td>
+            <td>@settings[key]</td>
+        </tr>
+    }
+</table>

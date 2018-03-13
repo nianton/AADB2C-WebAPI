@@ -1,0 +1,68 @@
+﻿@{ 
+    var customer = ViewData["Customer"] ?? "eurolife";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewData["Title"] - TrainingADB2C Experience</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- TODO: favicon -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="@Url.AbsoluteUrl("content/adb2c/css/global.css")" rel="stylesheet" type="text/css" />
+    <style>
+        /* Sticky footer styles */
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            /* Margin bottom by footer height */
+            margin-bottom: 60px;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            /* Set the fixed height of the footer here */
+            height: 60px;
+            background-color: rgba(32,32,32,0.9);
+            font-size: 12px;
+        }
+
+        .container .text-muted {
+            margin: 20px 0;
+            color: #f3f3f3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container unified_container @customer">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="image-center">
+                            <img alt="@customer" class="login-logo" src="@Url.AbsoluteUrl("content/adb2c/images/el_logo.png")" />
+                        </div>
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-9"><p class="text-muted">Url: <strong>@Url.RequestUrl()</strong></p></div>
+                <div class="col-sm-3"><p class="text-muted pull-right">[server: <strong>@DateTime.Now.ToString("ddd dd MMM yyyy, HH:mm")</strong>]</p></div>
+            </div>            
+        </div>
+    </footer>
+    <!-- Request: @Url.RequestUrl() -->
+</body>
+</html>

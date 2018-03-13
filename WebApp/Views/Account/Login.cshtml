@@ -1,0 +1,74 @@
+﻿@{
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+<div id="api" data-name="Unified">
+    <div class="localAccount" role="form">
+        <div class="intro">
+            <h2>Sign in with your existing account</h2>
+        </div>
+        <div class="error pageLevel" aria-hidden="true" style="display: none;">
+            <p role="alert"></p>
+        </div>
+        <div class="entry">
+            <div class="entry-item">
+                <label for="logonIdentifier">User name or Email Address</label>
+                <div class="error itemLevel" aria-hidden="true" style="display: none;">
+                    <p role="alert"></p>
+                </div>
+                <input type="email" id="logonIdentifier" name="LogonIdentifier" placeholder="LogonIdentifier" value="" tabindex="1">
+            </div>
+            @*<div class="entry-item">
+                <div class="password-label"> <label for="password">Password</label><a id="forgotPassword" tabindex="2">Forgot your password?</a></div>
+                <div class="error itemLevel" aria-hidden="true" style="display: none;">
+                    <p role="alert"></p>
+                </div>
+                <input type="password" id="password" name="Password" placeholder="Password" tabindex="1">
+            </div>*@
+            <div class="working"></div>
+            <div class="buttons"> <button id="next" tabindex="1">Sign in</button> </div>
+        </div>
+        <div class="divider">
+            <h2>OR</h2>
+        </div>
+        <div class="create">
+            <p>Don't have an account?<a id="createAccount" tabindex="1">Sign up now</a> </p>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-2.1.4.min.js"></script>
+<script>
+    function isEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@@"]+(\.[^<>()\[\]\\.,;:\s@@"]+)*)|(".+"))@@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    function proceed() {
+        var login = $('#logonIdentifier').val();
+        if (!login) {
+            return;
+        }
+
+        if (!isEmail(login)) {
+            location.href = "/Account/AdLogin?username=" + login;
+            return;
+        }
+
+        location.href = "/Account/SignUpSignIn?loginHint=" + login;
+        return;
+    }
+
+    $('#next').click(function () {
+        proceed();
+    });
+
+    $('#logonIdentifier').on('keypress', function (e) {
+        if (e.which === 13) {
+            proceed();
+        }
+    });
+</script>
