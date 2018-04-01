@@ -26,6 +26,11 @@ namespace WebApp.Controllers
             return View();
         }
 
+        public ActionResult SignUp()
+        {
+            return View();
+        }
+
         public ActionResult SocialSignUp(string campaign)
         {
             return View((object)campaign);
