@@ -23,7 +23,7 @@ namespace WebApp.Controllers
                 // Retrieve the token with the specified scope
                 using (var serviceClient = GetServiceClient())
                 {
-                    var items = await serviceClient.GetAllTodoItemsAsync();
+                    var items = await serviceClient.GetUserTodoItemsAsync();
                     ViewBag.Tasks = items;
                     return View();
                 }

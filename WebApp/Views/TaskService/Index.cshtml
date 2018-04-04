@@ -5,7 +5,7 @@
 
 <h2>To-Do List</h2>
 
-@using (Html.BeginForm("Create", "Tasks", FormMethod.Post))
+@using (Html.BeginForm("Create", "TaskService", FormMethod.Post))
 {
     <div>
         New Item: <input type="text" name="description">
@@ -25,10 +25,10 @@
     {
         <tr>
             <td>
-                @using (Html.BeginForm("Delete", "Tasks", FormMethod.Post))
+                @using (Html.BeginForm("Delete", "TaskService", FormMethod.Post))
                 {
-                    @item["Text"]
-                    <button name="id" value="@item["Id"]" style="float:right">Delete</button>
+                    @item.Text
+                    <button name="id" value="@item.Id" style="float:right">Delete</button>
                 }
             </td>
         </tr>

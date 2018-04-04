@@ -2,19 +2,13 @@
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IdentityModel.Selectors;
-using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace WcfServiceApp
 {
@@ -22,6 +16,15 @@ namespace WcfServiceApp
     {
         private const string HttpRequestPropertyName = "httpRequest";
         private const string AuthorizationHeaderName = "Authorization";
+        private const string PrincipalPropertyName = "Principal";
+
+        private readonly ConfigurationManager<OpenIdConnectConfiguration> _configurationManager;
+
+        public OAuthAuthorizationManager()
+        {
+            var endpoint = string.Format(AuthSettings.AadInstance, AuthSettings.Tenant, AuthSettings.DefaultPolicy);
+            _configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(endpoint, new OpenIdConnectConfigurationRetriever());
+        }
 
         protected override bool CheckAccessCore(OperationContext operationContext)
         {
@@ -34,29 +37,22 @@ namespace WcfServiceApp
                 //get the message
                 var message = operationContext.RequestContext.RequestMessage;
 
-                //get the http headers
+                // Retrieve Http headers from the message
                 var httpHeaders = ((HttpRequestMessageProperty)message.Properties[HttpRequestPropertyName]).Headers;
 
-                //get authorization header
+                // Get authorization header token value
                 var authHeader = httpHeaders.GetValues(AuthorizationHeaderName)?.SingleOrDefault();
                 if (authHeader != null)
                 {
                     var parts = authHeader.Split(' ');
-                    if (parts[0] == "Bearer")
+                    if (parts.Length == 2 && parts[0] == "Bearer")
                     {
-                        var userPrincipal = ValidateJwt(parts[1]).Result;
+                        // Validate JWT token and get the user principal
+                        var userPrincipal = ValidateJwtAsync(parts[1]).Result;
                         if (userPrincipal != null)
                         {
-                            //foreach (Claim c in userPrincipal.Claims.Where(c => c.Type == "http://www.contoso.com/claims/allowedoperation"))
-                            //{
-                            //    var authorized = true;
-                            //    //other claims authorization logic etc....
-                            //    if (authorized)
-                            //    {
-                            //        return true;
-                            //    }
-                            //}
-                            Thread.CurrentPrincipal = userPrincipal;
+                            // Injecting the principal in the operation context to be available as Thread.CurrentPrincipal in the service instance
+                            operationContext.ServiceSecurityContext.AuthorizationContext.Properties[PrincipalPropertyName] = userPrincipal;
                             return true;
                         }
                     }
@@ -76,20 +72,16 @@ namespace WcfServiceApp
         /// </summary>
         /// <param name="jwt"></param>
         /// <returns></returns>
-        private static async Task<ClaimsPrincipal> ValidateJwt(string jwt)
+        private async Task<ClaimsPrincipal> ValidateJwtAsync(string jwt)
         {
-            var endpoint = string.Format(AuthSettings.AadInstance, AuthSettings.Tenant, AuthSettings.DefaultPolicy);
-            var configManager = new ConfigurationManager<OpenIdConnectConfiguration>(endpoint, new OpenIdConnectConfigurationRetriever());
-            var config = await configManager.GetConfigurationAsync();
+            var config = await _configurationManager.GetConfigurationAsync();
             var handler = new JwtSecurityTokenHandler();
-            
+
             var validationParameters = new TokenValidationParameters()
             {
-                ValidAudiences = new[] { AuthSettings.ClientId },                
+                ValidAudiences = new[] { AuthSettings.ClientId },
                 IssuerSigningKeys = config.SigningKeys,
                 ValidIssuer = config.Issuer,
-                
-                //CertificateValidator = X509CertificateValidator.None,
                 AuthenticationType = AuthSettings.SignUpSignInPolicy,
                 RequireExpirationTime = true
             };
