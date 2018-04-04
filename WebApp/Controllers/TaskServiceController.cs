@@ -43,7 +43,6 @@ namespace WebApp.Controllers
         {
             try
             {
-                await Task.FromResult(0);
                 var todoItem = new TodoItem { Text = description }; 
                 using (var serviceClient = GetServiceClient())
                 {
