@@ -11,7 +11,7 @@ namespace WebApi.App_Start
     // the OpenID Connect metadata endpoint exposed by the STS by default.
     public class OpenIdConnectCachingSecurityTokenProvider : IIssuerSecurityTokenProvider
     {
-        public ConfigurationManager<OpenIdConnectConfiguration> _configManager;
+        private ConfigurationManager<OpenIdConnectConfiguration> _configManager;
         private string _issuer;
         private IEnumerable<SecurityToken> _tokens;
         private readonly string _metadataEndpoint;

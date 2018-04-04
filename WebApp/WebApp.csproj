@@ -96,6 +96,7 @@
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.2.206221351\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -156,10 +157,18 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connected Services\TaskServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\AdB2CController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\TaskServiceController.cs" />
     <Compile Include="Extensions\AllowCors.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
+    <Compile Include="Helpers\WCF\AuthorizationHeaderEndpointBehavior.cs" />
+    <Compile Include="Helpers\WCF\OAuthClientMessageInspector.cs" />
     <Compile Include="Helpers\UserExtensions.cs" />
     <Compile Include="Models\ADAuthenticationService.cs" />
     <Compile Include="Models\AdB2CProperties.cs" />
@@ -179,6 +188,13 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Connected Services\TaskServiceReference\TaskService.disco" />
+    <None Include="Connected Services\TaskServiceReference\configuration91.svcinfo" />
+    <None Include="Connected Services\TaskServiceReference\configuration.svcinfo" />
+    <None Include="Connected Services\TaskServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Content\adb2c\css\global.css" />
     <Content Include="Content\adb2c\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\adb2c\images\activedirectory.png" />
@@ -218,6 +234,19 @@
     <Content Include="Content\adb2c\fonts\Ubuntu-Regular.ttf" />
     <Content Include="Content\adb2c\localization\DefaultLocalizedResources_trainingadb2c.onmicrosoft.com_B2C_1_susi-dev_api.signinandsignupwithpassword_el.json" />
     <Content Include="Content\adb2c\localization\DefaultLocalizedResources_trainingadb2c.onmicrosoft.com_B2C_1_web-user_api.signinandsignupwithpassword_el.json" />
+    <None Include="Connected Services\TaskServiceReference\TaskService.wsdl" />
+    <None Include="Connected Services\TaskServiceReference\TaskService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TaskServiceReference\TaskService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\TaskServiceReference\TaskService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\TaskServiceReference\WebApp.TaskServiceReference.TodoItem.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\trainingadb2c-web - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\trainingadb2c-web - Web Deploy.pubxml" />
@@ -267,13 +296,19 @@
     <Content Include="Views\AdB2C\Unified.cshtml" />
     <Content Include="Views\AdB2C\UpdateProfile.cshtml" />
     <Content Include="Views\Home\Settings.cshtml" />
+    <Content Include="Views\TaskService\Index.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\TaskServiceReference\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
