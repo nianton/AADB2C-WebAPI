@@ -181,6 +181,7 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Web.aadb2c.config" />
     <None Include="Properties\PublishProfiles\trainingadb2c-webapi - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\trainingadb2c-webapi - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />

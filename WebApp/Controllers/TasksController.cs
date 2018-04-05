@@ -23,6 +23,8 @@ namespace WebApp.Controllers
         /// <returns></returns>
         public async Task<ActionResult> Index()
         {
+            ViewBag.ApiEndpoint = apiEndpoint;
+
             try
             {
                 // Retrieve the token with the specified scope

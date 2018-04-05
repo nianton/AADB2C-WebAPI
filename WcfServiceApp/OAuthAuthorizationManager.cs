@@ -12,11 +12,15 @@ using System.Threading.Tasks;
 
 namespace WcfServiceApp
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class OAuthAuthorizationManager : ServiceAuthorizationManager
     {
         private const string HttpRequestPropertyName = "httpRequest";
         private const string AuthorizationHeaderName = "Authorization";
-        private const string PrincipalPropertyName = "Principal";
+        private const string BearerTokenPrefix = "Bearer";
+        private const string AuthContextPrincipalPropertyName = "Principal";
 
         private readonly ConfigurationManager<OpenIdConnectConfiguration> _configurationManager;
 
@@ -34,7 +38,7 @@ namespace WcfServiceApp
 
             try
             {
-                //get the message
+                // Get the message
                 var message = operationContext.RequestContext.RequestMessage;
 
                 // Retrieve Http headers from the message
@@ -45,14 +49,16 @@ namespace WcfServiceApp
                 if (authHeader != null)
                 {
                     var parts = authHeader.Split(' ');
-                    if (parts.Length == 2 && parts[0] == "Bearer")
+                    if (parts.Length == 2 && string.Equals(parts[0], BearerTokenPrefix, StringComparison.OrdinalIgnoreCase))
                     {
+                        var jwtToken = parts[1];
+
                         // Validate JWT token and get the user principal
-                        var userPrincipal = ValidateJwtAsync(parts[1]).Result;
+                        var userPrincipal = ValidateJwtAsync(jwtToken).Result;
                         if (userPrincipal != null)
                         {
                             // Injecting the principal in the operation context to be available as Thread.CurrentPrincipal in the service instance
-                            operationContext.ServiceSecurityContext.AuthorizationContext.Properties[PrincipalPropertyName] = userPrincipal;
+                            operationContext.ServiceSecurityContext.AuthorizationContext.Properties[AuthContextPrincipalPropertyName] = userPrincipal;
                             return true;
                         }
                     }

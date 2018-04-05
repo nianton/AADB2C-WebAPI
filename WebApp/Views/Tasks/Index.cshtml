@@ -1,10 +1,9 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "To-Do List";
 }
 
 <h2>To-Do List</h2>
-
+<h4>via WebAPI [@ViewBag.ApiEndpoint]</h4>
 @using (Html.BeginForm("Create", "Tasks", FormMethod.Post))
 {
     <div>

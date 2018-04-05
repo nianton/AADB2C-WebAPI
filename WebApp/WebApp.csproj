@@ -297,6 +297,7 @@
     <Content Include="Views\AdB2C\UpdateProfile.cshtml" />
     <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\TaskService\Index.cshtml" />
+    <Content Include="Web.aadb2c.config" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
