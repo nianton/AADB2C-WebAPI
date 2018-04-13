@@ -158,7 +158,7 @@ namespace WebApp.Controllers
                 throw new Exception("The User is NULL.  Please clear your cookies and try again.  Specifically delete cookies for 'login.microsoftonline.com'.  See this GitHub issue for more details: https://github.com/Azure-Samples/active-directory-b2c-dotnet-webapp-and-webapi/issues/9");
             }
 
-            AuthenticationResult result = await cca.AcquireTokenSilentAsync(scopes, cca.Users.FirstOrDefault(), Startup.Authority, false);
+            AuthenticationResult result = await cca.AcquireTokenSilentAsync(scopes, user, Startup.Authority, false);
             return result.AccessToken;
         }
     }

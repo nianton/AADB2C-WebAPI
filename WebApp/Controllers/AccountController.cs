@@ -49,7 +49,6 @@ namespace WebApp.Controllers
             }
 
             Response.Redirect("/");
-
         }
 
         /*
