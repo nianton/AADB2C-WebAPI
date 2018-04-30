@@ -1,9 +1,9 @@
-﻿using Microsoft.Owin.Security.Jwt;
+﻿using Microsoft.IdentityModel.Tokens;
+using Microsoft.Owin.Security.Jwt;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
 using System.Configuration;
-using System.IdentityModel.Tokens;
 using WebApi.App_Start;
 
 namespace WebApi
@@ -29,10 +29,11 @@ namespace WebApi
                 AuthenticationType = Startup.DefaultPolicy
             };
 
+            string metadataEndPoint = string.Format(AadInstance, Tenant, DefaultPolicy);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions
             {
                 // This SecurityTokenProvider fetches the Azure AD B2C metadata & signing keys from the OpenIDConnect metadata endpoint
-                AccessTokenFormat = new JwtFormat(tvps, new OpenIdConnectCachingSecurityTokenProvider(String.Format(AadInstance, Tenant, DefaultPolicy)))
+                AccessTokenFormat = new JwtFormat(tvps, new OpenIdConnectCachingSecurityTokenProvider(metadataEndPoint))
             });
         }
     }
