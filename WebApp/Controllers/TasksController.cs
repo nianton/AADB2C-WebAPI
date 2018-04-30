@@ -15,7 +15,7 @@ namespace WebApp.Controllers
     [Authorize]
     public class TasksController : Controller
     {
-        private String apiEndpoint = Startup.ServiceUrl + "/api/tasks/";
+        private String apiEndpoint = Startup.ServiceUrl.TrimEnd('/') + "/api/tasks/";
 
         /// <summary>
         /// Makes a GET call to get the todo items for the current user.

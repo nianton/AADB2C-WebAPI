@@ -1,5 +1,7 @@
 ﻿using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Protocols;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Notifications;
@@ -8,7 +10,6 @@ using Owin;
 using System;
 using System.Configuration;
 using System.IdentityModel.Claims;
-using System.IdentityModel.Tokens;
 using System.Threading.Tasks;
 using System.Web;
 using WebApp.Models;
@@ -107,8 +108,8 @@ namespace WebApp
 
             if (!string.IsNullOrEmpty(policy) && !policy.Equals(DefaultPolicy))
             {
-                notification.ProtocolMessage.Scope = OpenIdConnectScopes.OpenId;
-                notification.ProtocolMessage.ResponseType = OpenIdConnectResponseTypes.IdToken;
+                notification.ProtocolMessage.Scope = OpenIdConnectScope.OpenId;
+                notification.ProtocolMessage.ResponseType = OpenIdConnectResponseType.IdToken;
                 notification.ProtocolMessage.IssuerAddress = notification.ProtocolMessage.IssuerAddress.ToLower().Replace(DefaultPolicy.ToLower(), policy.ToLower());
             }
 
