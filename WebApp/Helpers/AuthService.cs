@@ -14,7 +14,7 @@ namespace WebApp.Helpers
         Task<AuthResult> AuthorizeViaRefreshTokenAsync(string refreshToken);
     }
 
-    public class AuthService
+    public class AuthService : IAuthService
     {
         private static readonly HttpClient _httpClient = new HttpClient();
         private readonly string _tokenEndpoint;
@@ -25,7 +25,6 @@ namespace WebApp.Helpers
             _tokenEndpoint = tokenEndpoint;
             _clientId = clientId;
         }
-
 
         public async Task<AuthResult> AuthorizeAsync(string username, string password, IEnumerable<string> scopes)
         {

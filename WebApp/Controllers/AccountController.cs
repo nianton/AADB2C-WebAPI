@@ -122,8 +122,8 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<ActionResult> RopcLogin(RopcLoginModel model)
         {
-            var authenticationService = new AuthService(Startup.TokenEndpoint, Startup.ClientId);
-            var authenticationResult = await authenticationService.AuthorizeAsync(model.Username, model.Password, Startup.Scopes);
+            IAuthService authenticationService = new AuthService(Startup.TokenEndpoint, Startup.ClientId);
+            AuthResult authenticationResult = await authenticationService.AuthorizeAsync(model.Username, model.Password, Startup.Scopes);
             model.Result = authenticationResult;
             return View(model);
         }
