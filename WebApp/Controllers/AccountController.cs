@@ -2,8 +2,10 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WebApp.Helpers;
 using WebApp.Models;
 
 namespace WebApp.Controllers
@@ -89,12 +91,12 @@ namespace WebApp.Controllers
 
         public ActionResult AdLogin(string userName)
         {
-            var model = new AdLoginModel() { Username = userName };
+            var model = new LoginModel() { Username = userName };
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult AdLogin(AdLoginModel model)
+        public ActionResult AdLogin(LoginModel model)
         {
             IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
             AdAuthenticationService authService = new AdAuthenticationService(authenticationManager);
@@ -107,6 +109,22 @@ namespace WebApp.Controllers
             }
 
             ModelState.AddModelError("", authenticationResult.ErrorMessage);
+            return View(model);
+        }
+
+        public ActionResult RopcLogin(string userName)
+        {
+            var model = new RopcLoginModel() { Username = userName };
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> RopcLogin(RopcLoginModel model)
+        {
+            var authenticationService = new AuthService(Startup.TokenEndpoint, Startup.ClientId);
+            var authenticationResult = await authenticationService.AuthorizeAsync(model.Username, model.Password, Startup.Scopes);
+            model.Result = authenticationResult;
             return View(model);
         }
 

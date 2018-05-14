@@ -30,6 +30,7 @@ namespace WebApp
         public static string SignUpSignInPolicyId = ConfigurationManager.AppSettings["ida:SignUpSignInPolicyId"];
         public static string EditProfilePolicyId = ConfigurationManager.AppSettings["ida:EditProfilePolicyId"];
         public static string ResetPasswordPolicyId = ConfigurationManager.AppSettings["ida:ResetPasswordPolicyId"];
+        public static string RopcPolicyId = ConfigurationManager.AppSettings["ida:RopcPolicyId"];
 
         public static string DefaultPolicy = SignUpSignInPolicyId;
 
@@ -38,6 +39,8 @@ namespace WebApp
         public static string ReadTasksScope = ApiIdentifier + ConfigurationManager.AppSettings["api:ReadScope"];
         public static string WriteTasksScope = ApiIdentifier + ConfigurationManager.AppSettings["api:WriteScope"];
         public static string[] Scopes = new string[]{ ReadTasksScope, WriteTasksScope };
+
+        public static string TokenEndpoint => $"https://login.microsoftonline.com/{Tenant}/oauth2/v2.0/token?p={RopcPolicyId}";
 
         // OWIN auth middleware constants
         public const string ObjectIdElement = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";

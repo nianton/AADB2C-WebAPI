@@ -162,12 +162,13 @@
     <Compile Include="Controllers\TaskServiceController.cs" />
     <Compile Include="Extensions\AllowCors.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
+    <Compile Include="Helpers\AuthService.cs" />
     <Compile Include="Helpers\WCF\AuthorizationHeaderEndpointBehavior.cs" />
     <Compile Include="Helpers\WCF\OAuthClientMessageInspector.cs" />
     <Compile Include="Helpers\UserExtensions.cs" />
     <Compile Include="Models\ADAuthenticationService.cs" />
     <Compile Include="Models\AdB2CProperties.cs" />
-    <Compile Include="Models\AdLoginModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\MSALSessionCache.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
@@ -293,6 +294,7 @@
     <Content Include="Views\Home\Settings.cshtml" />
     <Content Include="Views\TaskService\Index.cshtml" />
     <Content Include="Web.aadb2c.config" />
+    <Content Include="Views\Account\RopcLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

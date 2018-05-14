@@ -32,6 +32,7 @@ namespace WebApp.Controllers
             return View();
         }
 
+
         /// <summary>
         /// Reserved for SPA use case of AD B2C.
         /// </summary>

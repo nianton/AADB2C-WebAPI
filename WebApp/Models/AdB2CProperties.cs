@@ -9,6 +9,7 @@ namespace WebApp.Models
     {
         public const string UiLocales = "ui_locales";
         public const string LoginHint = "login_hint";
+        public const string DomainHint = "domain_hint";
         public const string Campaign = "campaign";
         public const string GreekLocale = "el";
         public const string EnglishLocale = "en";

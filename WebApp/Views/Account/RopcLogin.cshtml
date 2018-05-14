@@ -1,0 +1,79 @@
+﻿@model WebApp.Models.RopcLoginModel
+@{
+    Layout = "~/Views/Shared/_Adb2cLayout.cshtml";
+    ViewBag.Title = "AAD B2C - ROPC Login";
+}
+
+<h2>AAD B2C: ROPC Login</h2>
+
+@using (Html.BeginForm())
+{
+<div id="api" data-name="Unified">
+    <div class="localAccount" role="form">
+        <div class="intro">
+            <h2>Sign in with your existing account</h2>
+        </div>
+        <div class="error pageLevel" aria-hidden="true" style="display: none;">
+            <p role="alert"></p>
+        </div>
+        <div class="entry">
+            <div class="entry-item">
+                <label for="logonIdentifier">User name or Email Address</label>
+                <div class="error itemLevel" aria-hidden="true" style="display: none;">
+                    <p role="alert"></p>
+                </div>
+                @Html.TextBoxFor(m => m.Username, new { id = "logonIdentifier", placehoder = "Enter your email", type = "email" })
+            </div>
+
+            @if (Model.Result == null)
+            {
+                <div class="entry-item">
+                    <label for="logonIdentifier">Password</label>
+                    <div class="error itemLevel" aria-hidden="true" style="display: none;">
+                        <p role="alert"></p>
+                    </div>
+                    @Html.PasswordFor(m => m.Password, new { id = "password", placeholder = "Enter your password" })
+                </div>
+                <div class="working"></div>
+                <div class="buttons"> <button id="next" tabindex="1">Sign in</button> </div>
+            }
+            else if (!Model.Result.IsSuccessful)
+            {
+                <div class="entry-item">
+                    <label for="logonIdentifier">Auth Error [failed authentication]</label>
+                    <div class="error itemLevel" aria-hidden="true">
+                        <p role="alert">@Model.Result.Error.Error</p>
+                    </div>
+                    @Html.TextBoxFor(m => m.Result.Error.Description, new { @class = "info-input" })
+                </div>
+
+                <div class="working"></div>
+                <div class="buttons"><a href="@Url.Action("RopcLogin")" class="btn btn-default">Reset</a> </div>
+            }
+            else
+            {
+                <div class="entry-item">
+                    <label for="logonIdentifier">Auth Response Token</label>
+                    @Html.TextBoxFor(m => m.Result.TokenResponse.AccessToken, new { @class = "info-input" })
+                </div>
+
+                <div class="entry-item">
+                    <label for="logonIdentifier">Auth Response Json</label>
+                    <pre style="max-height:150px;overflow-y:auto">@Json.Encode(Model.Result.TokenResponse)</pre>
+                </div>
+
+                <div class="working"></div>
+                <div class="buttons"><a href="@Url.Action("RopcLogin")" class="btn btn-default">Reset</a></div>
+            }
+        </div>
+    </div>
+</div>
+}
+<script src="~/Scripts/jquery-2.1.4.min.js"></script>
+<script>
+    $('#logonIdentifier').on('keypress', function (e) {
+        if (e.which === 13) {
+            proceed();
+        }
+    });
+</script>

@@ -166,6 +166,7 @@ label,
   background-color: #189DCF;
 }
 
+.info-input,
 #logonIdentifier,
 #password,
 #signInName {
