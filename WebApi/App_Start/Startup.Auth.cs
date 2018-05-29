@@ -32,7 +32,7 @@ namespace WebApi
             TokenValidationParameters tvps = new TokenValidationParameters
             {
                 // Accept only those tokens where the audience of the token is equal to the client ID of this app
-                ValidAudiences = new[] { ClientId, "cb6a0c5e-e8d1-4298-a374-bd3f2c57bd97" },
+                ValidAudience = ClientId,
                 AuthenticationType = Startup.DefaultPolicy
             };
 
