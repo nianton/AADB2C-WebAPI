@@ -14,5 +14,10 @@ namespace WcfServiceApp
         public static string ClientId = ConfigurationManager.AppSettings["ida:ClientId"];
         public static string SignUpSignInPolicy = ConfigurationManager.AppSettings["ida:SignUpSignInPolicyId"];
         public static string DefaultPolicy = SignUpSignInPolicy;
+
+        public static string AadTenant = ConfigurationManager.AppSettings["aad:Tenant"];
+        public static string AadMetadataInstance = ConfigurationManager.AppSettings["aad:AadInstance"];
+        public static string AadAudience = ConfigurationManager.AppSettings["aad:Audience"];
+        public const string AadAuthType = "AzureActiveDirectory";
     }
 }

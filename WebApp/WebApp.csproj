@@ -162,6 +162,7 @@
     <Compile Include="Controllers\TaskServiceController.cs" />
     <Compile Include="Extensions\AllowCors.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
+    <Compile Include="Helpers\AadAuthService.cs" />
     <Compile Include="Helpers\AuthService.cs" />
     <Compile Include="Helpers\WCF\AuthorizationHeaderEndpointBehavior.cs" />
     <Compile Include="Helpers\WCF\OAuthClientMessageInspector.cs" />
@@ -295,6 +296,7 @@
     <Content Include="Views\TaskService\Index.cshtml" />
     <Content Include="Web.aadb2c.config" />
     <Content Include="Views\Account\RopcLogin.cshtml" />
+    <Content Include="Views\Account\AadRopcLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

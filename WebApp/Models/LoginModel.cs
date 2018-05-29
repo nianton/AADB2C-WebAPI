@@ -17,4 +17,9 @@ namespace WebApp.Models
     {
         public AuthResult Result { get; set; }
     }
+
+    public class AadRopcLoginModel : LoginModel
+    {
+        public AadAuthResult Result { get; set; }
+    }
 }

@@ -1,7 +1,9 @@
-﻿using Microsoft.IdentityModel.Protocols;
+﻿using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -22,12 +24,24 @@ namespace WcfServiceApp
         private const string BearerTokenPrefix = "Bearer";
         private const string AuthContextPrincipalPropertyName = "Principal";
 
-        private readonly ConfigurationManager<OpenIdConnectConfiguration> _configurationManager;
+        private readonly IDictionary<string, ConfigurationManager<OpenIdConnectConfiguration>> _configurationManagersIndex;
 
         public OAuthAuthorizationManager()
         {
-            var endpoint = string.Format(AuthSettings.AadInstance, AuthSettings.Tenant, AuthSettings.DefaultPolicy);
-            _configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(endpoint, new OpenIdConnectConfigurationRetriever());
+            // Build B2C configuration manager
+            var b2cEndpoint = string.Format(AuthSettings.AadInstance, AuthSettings.Tenant, AuthSettings.DefaultPolicy);
+            var b2cConfigurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(b2cEndpoint, new OpenIdConnectConfigurationRetriever());
+            var b2cConfig = b2cConfigurationManager.GetConfigurationAsync().Result;
+
+            // Build AAD configuration manager
+            var aadEndpoint = string.Format(AuthSettings.AadMetadataInstance, AuthSettings.AadTenant);
+            var aadConfigurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(aadEndpoint, new OpenIdConnectConfigurationRetriever());
+            var aadConfig = aadConfigurationManager.GetConfigurationAsync().Result;
+
+            // Register configuration managers based on the issued
+            _configurationManagersIndex = new Dictionary<string, ConfigurationManager<OpenIdConnectConfiguration>>();
+            _configurationManagersIndex.Add(b2cConfig.Issuer, b2cConfigurationManager);
+            _configurationManagersIndex.Add(aadConfig.Issuer, aadConfigurationManager);
         }
 
         protected override bool CheckAccessCore(OperationContext operationContext)
@@ -73,6 +87,37 @@ namespace WcfServiceApp
             }
         }
 
+        private ConfigurationManager<OpenIdConnectConfiguration> GetConfigurationManager(string issuer)
+        {
+            if (_configurationManagersIndex.TryGetValue(issuer, out var configurationManager))
+            {
+                return configurationManager;
+            }
+
+            return null;
+        }
+
+        private async Task<TokenValidationParameters> GetValidationParametersAsync(string issuer)
+        {
+            var configurationManager = GetConfigurationManager(issuer);
+            if (configurationManager == null)
+            {
+                return null;
+            }
+
+            var isAad = issuer.StartsWith("https://sts.windows.net");
+            var config = await configurationManager.GetConfigurationAsync();
+
+            return new TokenValidationParameters()
+            {
+                ValidAudience = isAad ?  AuthSettings.AadAudience : AuthSettings.ClientId,
+                IssuerSigningKeys = config.SigningKeys.OfType<RsaSecurityKey>(),
+                ValidIssuer = config.Issuer,
+                AuthenticationType = isAad ? AuthSettings.AadAuthType : AuthSettings.SignUpSignInPolicy,
+                RequireExpirationTime = true
+            };
+        }
+
         /// <summary>
         /// Validates the JWT token and returns back the user's <see cref="ClaimsPrincipal"/> instance, if valid.
         /// </summary>
@@ -80,21 +125,22 @@ namespace WcfServiceApp
         /// <returns></returns>
         private async Task<ClaimsPrincipal> ValidateJwtAsync(string jwt)
         {
-            var config = await _configurationManager.GetConfigurationAsync();
-            var handler = new JwtSecurityTokenHandler();
+            // TODO: Remove in production, helps with exception messages during debugging
+            IdentityModelEventSource.ShowPII = true;
 
-            var validationParameters = new TokenValidationParameters()
+            // Read Jwt token and create validation parameters based on issuer
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(jwt);
+
+            var validationParameters = await GetValidationParametersAsync(jwtToken.Issuer);
+            if (validationParameters == null)
             {
-                ValidAudiences = new[] { AuthSettings.ClientId },
-                IssuerSigningKeys = config.SigningKeys,
-                ValidIssuer = config.Issuer,
-                AuthenticationType = AuthSettings.SignUpSignInPolicy,
-                RequireExpirationTime = true
-            };
+                return null;
+            }
 
             try
             {
-                var principal = handler.ValidateToken(jwt, validationParameters, out Microsoft.IdentityModel.Tokens.SecurityToken validatedToken);
+                var principal = handler.ValidateToken(jwt, validationParameters, out SecurityToken validatedToken);
                 return principal;
             }
             catch (Exception ex)

@@ -49,6 +49,13 @@ namespace WebApi.Controllers
         // Validate to ensure the necessary scopes are present.
         private void HasRequiredScopes(String permission)
         {
+            if (User.Identity.AuthenticationType == Startup.AadAuthType)
+            {
+                // TODO: Maybe check different set of claims for AAD authentication.
+                // For now, we let the user access the resource for the demo app.
+                return;
+            }
+
             if (!User.HasPermission(permission))
             {
                 throw new HttpResponseException(new HttpResponseMessage

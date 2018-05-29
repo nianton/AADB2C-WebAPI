@@ -40,6 +40,14 @@ namespace WebApp
         public static string WriteTasksScope = ApiIdentifier + ConfigurationManager.AppSettings["api:WriteScope"];
         public static string[] Scopes = new string[]{ ReadTasksScope, WriteTasksScope };
 
+        /// Azure Active Directory setting -for ROPC
+        public static string AadTenant = ConfigurationManager.AppSettings["aad:Tenant"];
+        public static string AadMetadataInstance = ConfigurationManager.AppSettings["aad:AadInstance"];
+        public static string AadClientId = ConfigurationManager.AppSettings["aad:ClientId"];
+        public static string AadAudience = ConfigurationManager.AppSettings["aad:Audience"];
+        public static string AadTokenEndpoint => $"https://login.windows.net/{AadTenant}/oauth2/token";
+
+
         public static string TokenEndpoint => $"https://login.microsoftonline.com/{Tenant}/oauth2/v2.0/token?p={RopcPolicyId}";
 
         // OWIN auth middleware constants

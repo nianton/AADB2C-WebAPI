@@ -98,7 +98,7 @@ namespace WebApp.Controllers
 
         /// <summary>
         /// Method to get back the access token for the current request.
-        /// </summary>
+        /// </summary>  
         /// <returns>The access token.</returns>
         private string GetAccessToken()
         {
