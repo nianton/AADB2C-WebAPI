@@ -95,6 +95,23 @@
   </BuildingBlocks>
 
   <ClaimsProviders>
+
+    <!-- Local account Sign-Up claims provider -->
+    <ClaimsProvider>
+      <DisplayName>Local Account</DisplayName>
+      <TechnicalProfiles>
+
+        <TechnicalProfile Id="SelfAsserted-LocalAccountSignin-Email">
+          <ValidationTechnicalProfiles>
+            <!--Demo: Add user migration validation technical profile before login-NonInteractive -->
+            <ValidationTechnicalProfile ReferenceId="REST-API-SignIn" ContinueOnError="false" />
+            <ValidationTechnicalProfile ReferenceId="login-NonInteractive" />
+          </ValidationTechnicalProfiles>
+        </TechnicalProfile>
+
+      </TechnicalProfiles>
+    </ClaimsProvider>
+    
     <ClaimsProvider>
       <DisplayName>Local Account SignIn</DisplayName>
       <TechnicalProfiles>
@@ -120,7 +137,7 @@
           <DisplayName>Validate user password hash</DisplayName>
           <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.RestfulProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
           <Metadata>
-            <Item Key="ServiceUrl">https://wingtipb2cfuncs.azurewebsites.net/api/LookUpLoyaltyWebHook?code=MQuG7BIE3eXBaCZ/YCfY1SHabm55HEphpNLmh1OP3hdfHkvI2QwPrw==</Item>
+            <Item Key="ServiceUrl">https://trainingadb2c-funcapp.azurewebsites.net/api/SignIn?code=0CuIyK0SMCTsHdPNpC85plk97KFLZf5porOl0PYvf3e7AwtIXIYvyg==</Item>
             <Item Key="AuthenticationType">None</Item>
             <Item Key="SendClaimsIn">Body</Item>
           </Metadata>

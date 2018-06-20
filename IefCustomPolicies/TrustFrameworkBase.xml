@@ -676,9 +676,9 @@
             <OutputClaim ClaimTypeReferenceId="extension_TaxRegistrationNumber" />
             <OutputClaim ClaimTypeReferenceId="authenticationSource" />
           </OutputClaims>
-          <ValidationTechnicalProfiles>
+          <!--<ValidationTechnicalProfiles>
             <ValidationTechnicalProfile ReferenceId="login-NonInteractive" />
-          </ValidationTechnicalProfiles>
+          </ValidationTechnicalProfiles>-->
           <UseTechnicalProfileForSessionManagement ReferenceId="SM-AAD" />
         </TechnicalProfile>
 
