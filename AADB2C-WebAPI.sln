@@ -19,7 +19,28 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WcfServiceApp", "WcfServiceApp\WcfServiceApp.csproj", "{46F908FE-3051-400E-8D23-6049BE2C4B90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserMigrationApp", "UserMigrationApp\UserMigrationApp.csproj", "{7FD6BFEA-1DE1-44D7-AF85-BE638AB99E08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MigrationFuncApp", "MigrationFuncApp\MigrationFuncApp.csproj", "{544FF9AA-6B45-462A-A45D-6E79AFB3BB1A}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "IefCustomPolicies", "IefCustomPolicies\", "{EF197AF8-3485-4F82-8DC0-E9C270FD2A95}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.1"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_22212"
+		Debug.AspNetCompiler.PhysicalPath = "IefCustomPolicies\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_22212\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_22212"
+		Release.AspNetCompiler.PhysicalPath = "IefCustomPolicies\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_22212\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "22212"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +60,6 @@ Global
 		{46F908FE-3051-400E-8D23-6049BE2C4B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46F908FE-3051-400E-8D23-6049BE2C4B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46F908FE-3051-400E-8D23-6049BE2C4B90}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7FD6BFEA-1DE1-44D7-AF85-BE638AB99E08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7FD6BFEA-1DE1-44D7-AF85-BE638AB99E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7FD6BFEA-1DE1-44D7-AF85-BE638AB99E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7FD6BFEA-1DE1-44D7-AF85-BE638AB99E08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
