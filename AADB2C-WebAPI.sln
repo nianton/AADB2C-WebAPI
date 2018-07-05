@@ -42,6 +42,13 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "IefCustomPolicies", "IefCus
 		DefaultWebSiteLanguage = "Visual C#"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserMigrationApp", "UserMigrationApp\UserMigrationApp.csproj", "{7FD6BFEA-1DE1-44D7-AF85-BE638AB99E08}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B9C86886-8D7D-4DC8-9CF3-E579AF651E3C}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\TrainingADB2C-GrantDelete.ps1 = Scripts\TrainingADB2C-GrantDelete.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,6 +67,18 @@ Global
 		{46F908FE-3051-400E-8D23-6049BE2C4B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46F908FE-3051-400E-8D23-6049BE2C4B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46F908FE-3051-400E-8D23-6049BE2C4B90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{544FF9AA-6B45-462A-A45D-6E79AFB3BB1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{544FF9AA-6B45-462A-A45D-6E79AFB3BB1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{544FF9AA-6B45-462A-A45D-6E79AFB3BB1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{544FF9AA-6B45-462A-A45D-6E79AFB3BB1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF197AF8-3485-4F82-8DC0-E9C270FD2A95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF197AF8-3485-4F82-8DC0-E9C270FD2A95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF197AF8-3485-4F82-8DC0-E9C270FD2A95}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF197AF8-3485-4F82-8DC0-E9C270FD2A95}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{7FD6BFEA-1DE1-44D7-AF85-BE638AB99E08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FD6BFEA-1DE1-44D7-AF85-BE638AB99E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FD6BFEA-1DE1-44D7-AF85-BE638AB99E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FD6BFEA-1DE1-44D7-AF85-BE638AB99E08}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
