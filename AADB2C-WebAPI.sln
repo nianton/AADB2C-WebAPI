@@ -39,6 +39,7 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "IefCustomPolicies", "IefCus
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
 		VWDPort = "22212"
+		SlnRelativePath = "IefCustomPolicies\"
 		DefaultWebSiteLanguage = "Visual C#"
 	EndProjectSection
 EndProject

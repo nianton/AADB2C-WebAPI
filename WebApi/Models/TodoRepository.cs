@@ -17,7 +17,19 @@ namespace WebApi.Models
 
         public TodoInMemoryRepository()
         {
-            _list = new List<TodoItem>();
+            _list = new List<TodoItem>();            
+
+            for (int i = 0; i < 3; i++)
+            {
+                int id = GetNextId();
+                _list.Add(new TodoItem()
+                {
+                    DateModified = DateTime.Now,
+                    Id = id,
+                    Owner = Guid.NewGuid().ToString("N"),
+                    Text = $"Sample text for {id}"
+                });
+            }            
         }
 
         public TodoItem Add(TodoItem todoItem)

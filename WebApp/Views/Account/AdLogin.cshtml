@@ -1,6 +1,6 @@
-﻿@model WebApp.Models.AdLoginModel
+﻿@model WebApp.Models.LoginModel
 @{
-    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+    Layout = "~/Views/Shared/_AdB2CLayout.cshtml";
     ViewBag.Title = "Login";
 }
 
@@ -31,7 +31,10 @@
                 <input type="password" id="password" name="Password" placeholder="Password" tabindex="1">
             </div>
             <div class="working"></div>
-            <div class="buttons"> <button id="next" tabindex="1">Sign in</button> <button id="previous" tabindex="1">Cancel</button></div>
+            <div class="buttons">
+                <button id="continue" aria-label="Create">Sign in</button>
+                <button id="cancel" aria-label="Cancel">Cancel</button>
+            </div>
         </div>
         @*<div class="divider">
             <h2>OR</h2>
@@ -50,7 +53,7 @@
             alert("Please contact your administrator.")
         });
 
-        $('#previous').click(function () {
+        $('#cancel').click(function () {
             window.location = "/Account/Login";
         });
 

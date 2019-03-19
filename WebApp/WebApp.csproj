@@ -247,6 +247,8 @@
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\trainingadb2c-web - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\trainingadb2c-web - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\trainingadb2c-web-staging - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\trainingadb2c-web-staging - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />

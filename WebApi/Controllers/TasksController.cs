@@ -19,6 +19,15 @@ namespace WebApi.Controllers
         public static string ReadPermission = ConfigurationManager.AppSettings["api:ReadScope"];
         public static string WritePermission = ConfigurationManager.AppSettings["api:WriteScope"];
 
+        [HttpGet]
+        [Route("api/tasks/all")]
+        [AllowAnonymous]
+        public IEnumerable<TodoItem> GetAll()
+        {
+            return repository.ListAll();
+        }
+
+
         public IEnumerable<TodoItem> Get()
         {
             HasRequiredScopes(ReadPermission);
