@@ -8,7 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using WebApp.Models;
+using WebApp.Helpers;
 
 namespace WebApp.Controllers
 {
@@ -69,7 +69,7 @@ namespace WebApp.Controllers
                 var accessToken = await GetAccessToken(Startup.WriteTasksScope);
 
                 // Set the content
-                var httpContent = new[] {new KeyValuePair<string, string>("Text", description)};
+                var httpContent = new[] { new KeyValuePair<string, string>("Text", description) };
 
                 // Create the request
                 HttpClient client = new HttpClient();
@@ -112,9 +112,9 @@ namespace WebApp.Controllers
 
                 HttpClient client = new HttpClient();
                 HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, apiEndpoint + id);
-             
+
                 // Add token to the Authorization header and send the request
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken); 
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
                 HttpResponseMessage response = await client.SendAsync(request);
 
                 // Handle the response
@@ -149,16 +149,27 @@ namespace WebApp.Controllers
         private async Task<string> GetAccessToken(params string[] scopes)
         {
             string signedInUserID = User.GetId();
-            TokenCache userTokenCache = new MSALSessionCache(signedInUserID, this.HttpContext).GetMsalCacheInstance();
-            ConfidentialClientApplication cca = new ConfidentialClientApplication(Startup.ClientId, Startup.Authority, Startup.RedirectUri, new ClientCredential(Startup.ClientSecret), userTokenCache, null);
 
-            var user = cca.Users.FirstOrDefault();
-            if (user == null)
+            // MSAL v3 confidential application creation
+            IConfidentialClientApplication cca = ConfidentialClientApplicationBuilder.Create(Startup.ClientId)
+                .WithB2CAuthority(Startup.Authority)
+                .WithClientSecret(Startup.ClientSecret)
+                .WithRedirectUri(Startup.RedirectUri)
+                .Build();
+
+            // Enable encrypted persistence to local file for tokens
+            TokenCacheHelper.EnableSerialization(cca.UserTokenCache);
+            IEnumerable<IAccount> accounts = await cca.GetAccountsAsync();
+            IAccount account = accounts.FirstOrDefault(acc => acc.HomeAccountId.Identifier.StartsWith(signedInUserID));
+            if (account == null)
             {
-                throw new Exception("The User is NULL.  Please clear your cookies and try again.  Specifically delete cookies for 'login.microsoftonline.com'.  See this GitHub issue for more details: https://github.com/Azure-Samples/active-directory-b2c-dotnet-webapp-and-webapi/issues/9");
+                throw new Exception("The account is NULL.  Please clear your cookies and try again.  Specifically delete cookies for 'login.microsoftonline.com'.  See this GitHub issue for more details: https://github.com/Azure-Samples/active-directory-b2c-dotnet-webapp-and-webapi/issues/9");
             }
 
-            AuthenticationResult result = await cca.AcquireTokenSilentAsync(scopes, user, Startup.Authority, false);
+            AuthenticationResult result = await cca.AcquireTokenSilent(Startup.Scopes, account)
+                .WithB2CAuthority(Startup.Authority)
+                .ExecuteAsync();
+
             return result.AccessToken;
         }
     }

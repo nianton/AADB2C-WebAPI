@@ -10,8 +10,10 @@ using Owin;
 using System;
 using System.Configuration;
 using System.IdentityModel.Claims;
+using System.IdentityModel.Tokens;
 using System.Threading.Tasks;
 using System.Web;
+using WebApp.Helpers;
 using WebApp.Models;
 
 namespace WebApp
@@ -47,7 +49,6 @@ namespace WebApp
         public static string AadAudience = ConfigurationManager.AppSettings["aad:Audience"];
         public static string AadTokenEndpoint => $"https://login.windows.net/{AadTenant}/oauth2/token";
 
-
         public static string TokenEndpoint => $"https://login.microsoftonline.com/{Tenant}/oauth2/v2.0/token?p={RopcPolicyId}";
 
         // OWIN auth middleware constants
@@ -62,7 +63,7 @@ namespace WebApp
         public void ConfigureAuth(IAppBuilder app)
         {
             app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
-
+            
             //app.UseCookieAuthentication(new CookieAuthenticationOptions());            
             app.UseCookieAuthentication(BuildCookieOptions());
 
@@ -167,14 +168,25 @@ namespace WebApp
         private async Task OnAuthorizationCodeReceived(AuthorizationCodeReceivedNotification notification)
         {
             // Extract the code from the response notification
-            var code = notification.Code;
+            string code = notification.Code;
 
+            // Extract signed in user id
             string signedInUserID = notification.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            TokenCache userTokenCache = new MSALSessionCache(signedInUserID, notification.OwinContext.Environment["System.Web.HttpContextBase"] as HttpContextBase).GetMsalCacheInstance();
-            ConfidentialClientApplication cca = new ConfidentialClientApplication(ClientId, Authority, RedirectUri, new ClientCredential(ClientSecret), userTokenCache, null);
+
+            // MSAL v3 confidential application creation
+            IConfidentialClientApplication cca = ConfidentialClientApplicationBuilder.Create(ClientId)
+                .WithB2CAuthority(Authority)
+                .WithClientSecret(ClientSecret)
+                .WithRedirectUri(RedirectUri)
+                .Build();
+
+            // Enable encrypted persistence to local file for tokens
+            TokenCacheHelper.EnableSerialization(cca.UserTokenCache);
+
             try
             {
-                AuthenticationResult result = await cca.AcquireTokenByAuthorizationCodeAsync(code, Scopes);
+                // MSAL v3 get accesstoken by authorization code
+                AuthenticationResult result = await cca.AcquireTokenByAuthorizationCode(Scopes, code).ExecuteAsync();
             }
             catch (Exception ex)
             {

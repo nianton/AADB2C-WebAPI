@@ -1,0 +1,22 @@
+﻿@using System.Security.Claims
+@{    
+    ViewBag.Title = "Callback form";
+}
+<h2>@ViewBag.Title</h2>
+
+<h4>Request form (if any):</h4>
+
+<table class="table-hover claim-table">
+    <tr>
+        <th class="claim-type claim-data claim-head">Key</th>
+        <th class="claim-data claim-head">Value</th>
+    </tr>
+
+    @foreach (string key in Request.Form.AllKeys)
+    {
+        <tr>
+            <td class="claim-type">@key</td>
+            <td class="claim-data">@Request.Form[key]</td>
+        </tr>
+    }
+</table>

@@ -13,6 +13,12 @@ namespace WebApp.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public ActionResult Callback(string returnUrl)
+        {
+            return View();
+        }
+
         public ActionResult Settings()
         {
             return View();

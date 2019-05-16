@@ -16,25 +16,26 @@ namespace UserMigrationApp
         static readonly string tenant = ConfigurationManager.AppSettings["tenant"];
         static GraphApiClient client;
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             Console.Write("Checking GraphAPI client credentials...");
             client = new GraphApiClient(applicationId, applicationSecret, tenant);
-            client.EnsureInitAsync().Wait();
+            await client.EnsureInitAsync();
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("DONE.");
             Console.ForegroundColor = ConsoleColor.White;
 
-
-            DeleteTestUsers();
-
             var connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            await TestUpdates();
+
+            await DeleteTestUsers();
 
             // Load local users
             var userRepository = new UserRepository(connectionString);
-            var users = userRepository.GetUsersAsync().Result;
-            
+            var users = await userRepository.GetUsersAsync();
+
             // Migrate first 20 user to B2C
             var createdUsers = new List<User>();
             var timespans = new List<long>();
@@ -42,7 +43,7 @@ namespace UserMigrationApp
             {
                 user.DisplayName = "test " + user.DisplayName;
                 var sw = Stopwatch.StartNew();
-                var newUser = client.UserCreateAsync(user).Result;
+                var newUser = await client.UserCreateAsync(user);
                 var elapsedMs = sw.ElapsedMilliseconds;
                 Console.WriteLine($"User added: ({elapsedMs} ms): {user.DisplayName} ({user.SignInNames.First().Value})");
                 timespans.Add(elapsedMs);
@@ -66,13 +67,28 @@ namespace UserMigrationApp
             }
         }
 
+        static async Task TestUpdates()
+        {
+            var users = await client.UserGetListAsync();
+            var user = users.Items[14];
+
+            await client.UserUpdateAsync(user.ObjectId, new
+            {
+                signInNames = new[] {
+                        new SignInName { Value = "n.ia.n.ton@gmail.com", Type = "emailAddress" }
+                    }
+            });
+
+            user = await client.UserGetAsync(user.ObjectId);
+        }
+
         static bool IsTestUser(User user)
         {
             return user.DisplayName.StartsWith("test")
                 || user.DisplayName.StartsWith("[test]");
         }
 
-        static void DeleteTestUsers()
+        static async Task DeleteTestUsers()
         {
             Console.WriteLine("Are you sure you want to delete test users? (Y/N)");
             var confirmation = Console.ReadLine();
@@ -86,9 +102,10 @@ namespace UserMigrationApp
             foreach (var user in testUsers)
             {
                 var sw = Stopwatch.StartNew();
-                client.UserDeleteAsync(user.ObjectId).Wait();
+                await client.UserDeleteAsync(user.ObjectId);
                 Console.WriteLine($"User Deleted: ({sw.ElapsedMilliseconds} ms): {user.DisplayName} ({user.SignInNames.First().Value})");
             }
         }
     }
 }
+ 

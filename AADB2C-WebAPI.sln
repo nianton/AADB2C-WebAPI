@@ -50,6 +50,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Scripts\TrainingADB2C-GrantDelete.ps1 = Scripts\TrainingADB2C-GrantDelete.ps1
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebFormsApp", "WebFormsApp\WebFormsApp.csproj", "{29AD9E2B-AD39-471A-AC26-1FB36798827B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,10 @@ Global
 		{7FD6BFEA-1DE1-44D7-AF85-BE638AB99E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FD6BFEA-1DE1-44D7-AF85-BE638AB99E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FD6BFEA-1DE1-44D7-AF85-BE638AB99E08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29AD9E2B-AD39-471A-AC26-1FB36798827B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29AD9E2B-AD39-471A-AC26-1FB36798827B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29AD9E2B-AD39-471A-AC26-1FB36798827B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29AD9E2B-AD39-471A-AC26-1FB36798827B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
