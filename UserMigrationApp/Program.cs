@@ -22,6 +22,23 @@ namespace UserMigrationApp
             client = new GraphApiClient(applicationId, applicationSecret, tenant);
             await client.EnsureInitAsync();
 
+            var demoEmail = "ni.anto.n@gmail.com";
+            var demoUser = await client.UserGetBySigninNameAsync(demoEmail);
+            if (demoUser == null)
+                demoUser = await CreateDemoUser(demoEmail, demoEmail.Substring(0, demoEmail.IndexOf("@")));
+
+            await client.UserUpdateAsync(demoUser.ObjectId, new
+            {
+                passwordProfile = new PasswordProfile
+                {
+                    EnforceChangePasswordPolicy = false,
+                    ForceChangePasswordNextLogin = true,
+                    Password = "p@ssworD123"
+                }
+            });
+            demoUser = await client.UserGetBySigninNameAsync(demoEmail);
+
+
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("DONE.");
             Console.ForegroundColor = ConsoleColor.White;
@@ -86,6 +103,35 @@ namespace UserMigrationApp
         {
             return user.DisplayName.StartsWith("test")
                 || user.DisplayName.StartsWith("[test]");
+        }
+
+        static Task<User> CreateDemoUser(string email, string userName)
+        {
+            var user = new User
+            {
+                AccountEnabled = true,
+                PasswordPolicies = "DisablePasswordExpiration",
+                SignInNames = new List<SignInName>
+                {
+                    new SignInName() { Type = "emailAddress", Value = email },
+                    new SignInName() { Type = "userName", Value = userName }
+                },
+                CreationType = "LocalAccount",
+                Surname = "Useropoulos",
+                GivenName = "Nick",
+                DisplayName = "Nick.Useropoulos",
+                OtherMails = new List<string> { "ni.a.n.ton@gmail.com" },
+                PasswordProfile = new PasswordProfile
+                {
+                    EnforceChangePasswordPolicy = false,
+                    ForceChangePasswordNextLogin = false,
+                    Password = "P@ssword123"
+                }
+            };
+
+            user.SetExtendedProperty("TaxRegistrationNumber", $"{DateTime.Now:FFFssmmHH}");
+
+            return client.UserCreateAsync(user);
         }
 
         static async Task DeleteTestUsers()
