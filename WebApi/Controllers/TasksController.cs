@@ -57,22 +57,25 @@ namespace WebApi.Controllers
 
         // Validate to ensure the necessary scopes are present.
         private void HasRequiredScopes(String permission)
-        {
-            if (User.Identity.AuthenticationType == Startup.AadAuthType)
-            {
-                // TODO: Maybe check different set of claims for AAD authentication.
-                // For now, we let the user access the resource for the demo app.
-                return;
-            }
+        {        
+            // HACK: No Scope checks for now ** CHANGE ACCORDINGLY **
+            return;
 
-            if (!User.HasPermission(permission))
-            {
-                throw new HttpResponseException(new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.Unauthorized,
-                    ReasonPhrase = $"The Scope claim does not contain the {permission} permission."
-                });
-            }
+            //if (User.Identity.AuthenticationType == Startup.AadAuthType)
+            //{
+            //    // TODO: Maybe check different set of claims for AAD authentication.
+            //    // For now, we let the user access the resource for the demo app.
+            //    return;
+            //}
+
+            //if (!User.HasPermission(permission))
+            //{
+            //    throw new HttpResponseException(new HttpResponseMessage
+            //    {
+            //        StatusCode = HttpStatusCode.Unauthorized,
+            //        ReasonPhrase = $"The Scope claim does not contain the {permission} permission."
+            //    });
+            //}
         }
     }
 }
